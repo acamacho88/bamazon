@@ -23,8 +23,6 @@ const afterConnection = function () {
         })
         promptUser();
     });
-
-
 }
 
 const promptUser = function () {

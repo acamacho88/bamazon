@@ -15,24 +15,41 @@ inquirer.prompt([{
     choices: ["View Products for Sale", "View Low Inventory", "Add to Inventory", "Add New Product"],
     name: "choice"
 }]).then(answer => {
-    switch (answer.choice) {
-        case "View Products for Sale":
-            break;
-        case "View Low Inventory":
-            break;
-        case "Add to Inventory":
-            break;
-        case "Add New Product":
-            break;
-    }
+    connection.connect(function (err) {
+        if (err) throw err;
+        console.log("connected as id " + connection.threadId);
+        switch (answer.choice) {
+            case "View Products for Sale":
+                viewProds();
+                break;
+            case "View Low Inventory":
+                break;
+            case "Add to Inventory":
+                break;
+            case "Add New Product":
+                break;
+        }
+    })
 })
 
-connection.connect(function (err) {
-    if (err) throw err;
-    console.log("connected as id " + connection.threadId);
-    afterConnection();
-})
+const viewProds = function () {
+    connection.query('SELECT * FROM products', function (error, response) {
+        if (error) console.log(error);
+        response.forEach(item => {
+            console.log("Item ID: " + item.item_id + ", Name: " + item.product_name + ", Price: $" + item.price);
+        })
+        connection.end();
+    });
+}
 
-const afterConnection = function () {
-    connection.query();
+const viewLow = function () {
+
+}
+
+const addInventory = function () {
+
+}
+
+const addProduct = function () {
+
 }

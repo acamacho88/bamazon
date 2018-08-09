@@ -23,6 +23,7 @@ inquirer.prompt([{
                 viewProds();
                 break;
             case "View Low Inventory":
+                viewLow();
                 break;
             case "Add to Inventory":
                 break;
@@ -43,7 +44,13 @@ const viewProds = function () {
 }
 
 const viewLow = function () {
-
+    connection.query('SELECT * FROM products WHERE stock_quantity < 5', function (error, response) {
+        if (error) console.log(error);
+        response.forEach(item => {
+            console.log("Item ID: " + item.item_id + ", Name: " + item.product_name + ", Price: $" + item.price);
+        })
+        connection.end();
+    });
 }
 
 const addInventory = function () {

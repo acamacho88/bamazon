@@ -26,6 +26,7 @@ inquirer.prompt([{
                 viewLow();
                 break;
             case "Add to Inventory":
+                addInventory();
                 break;
             case "Add New Product":
                 break;
@@ -54,8 +55,34 @@ const viewLow = function () {
 }
 
 const addInventory = function () {
-
+    inquirer.prompt([{
+            type: "input",
+            message: "Enter the ID of the item you'd like to add to",
+            name: "id"
+        },
+        {
+            type: "input",
+            message: "Enter the amount of items you're adding to the current inventory",
+            name: "quantity"
+        }
+    ]).then(answer => {
+        let id = parseInt(answer.id);
+        let quantity = parseInt(answer.quantity);
+        if (id !== NaN && quantity !== NaN) {
+            connection.query("SELECT stock_quantity FROM products WHERE item_id = " + id, function (error, response) {
+                let currStock = parseInt(response[0].stock_quantity);
+                currStock += quantity;
+                connection.query("UPDATE products SET stock_quantity = ? WHERE item_id = ?", [currStock, id], function (error, response) {
+                    console.log("Item added!");
+                    connection.end();
+                })
+            })
+        } else {
+            console.log("Invalid entries!");
+        }
+    })
 }
+
 
 const addProduct = function () {
 

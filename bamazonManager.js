@@ -29,6 +29,7 @@ inquirer.prompt([{
                 addInventory();
                 break;
             case "Add New Product":
+                addProduct();
                 break;
         }
     })
@@ -85,5 +86,45 @@ const addInventory = function () {
 
 
 const addProduct = function () {
-
+    inquirer.prompt([{
+            type: "input",
+            message: "Enter the product name",
+            name: "name"
+        },
+        {
+            type: "input",
+            message: "Enter the department name",
+            name: "department"
+        },
+        {
+            type: "input",
+            message: "Enter the price (with no $)",
+            name: "price"
+        },
+        {
+            type: "input",
+            message: "Enter the number of items we're adding",
+            name: "stock"
+        }
+    ]).then(answer => {
+        let name = answer.name;
+        let department = answer.department;
+        let price = parseFloat(answer.price);
+        let stock = parseInt(answer.stock);
+        if (price !== NaN && stock !== NaN) {
+            let prod = {
+                product_name: name,
+                department_name: department,
+                price: price,
+                stock_quantity: stock
+            };
+            connection.query("INSERT INTO products SET ?", prod, function (error, results) {
+                if (error) console.log(error);
+                console.log("Item entered!");
+                connection.end();
+            })
+        } else {
+            console.log("Invalid price/stock!");
+        }
+    })
 }

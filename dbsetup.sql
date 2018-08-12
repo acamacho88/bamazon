@@ -22,3 +22,14 @@ INSERT INTO products (product_name, department_name, price, stock_quantity) VALU
 ('Blue jeans','Clothing',50.99,10),
 ('Superunknown','Music',13.99,10),
 ('Toothpaste','Pharmacy',12.99,5);
+
+CREATE TABLE departments (
+  department_id INTEGER AUTO_INCREMENT NOT NULL,
+  department_name VARCHAR(30) NOT NULL,
+  over_head_costs INTEGER NOT NULL,
+  PRIMARY KEY (department_id)
+);
+
+ALTER TABLE products ADD product_sales FLOAT(7,2) DEFAULT 0;
+
+SELECT * FROM products;
